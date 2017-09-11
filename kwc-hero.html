@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`kwc-hero`
+Header display for logged out users
+
+@demo demo/index.html
+-->
+
+<dom-module id="kwc-hero">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'kwc-hero',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'kwc-hero',
+        },
+      },
+
+    });
+  </script>
+</dom-module>
