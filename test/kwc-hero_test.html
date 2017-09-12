@@ -1,30 +1,104 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>kwc-hero test</title>
+        <title>kwc-hero test</title>
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
+        <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../kwc-hero.html">
-  </head>
-  <body>
-    <test-fixture id="basic">
-      <template>
-        <kwc-hero></kwc-hero>
-      </template>
-    </test-fixture>
+        <link rel="import" href="../kwc-hero.html">
+    </head>
+    <body>
+        <test-fixture id="basic">
+            <template>
+                <kwc-hero></kwc-hero>
+            </template>
+        </test-fixture>
 
-    <script>
-      suite('kwc-hero', function() {
-        test('instantiating the element works', function() {
-          var element = fixture('basic');
-          assert.equal(element.is, 'kwc-hero');
-        });
-      });
-    </script>
-  </body>
+        <test-fixture id="populated">
+            <template>
+                <kwc-hero background-img-src="../assets/background.svg"
+                          main-img-src="../assets/judoka.svg"
+                          secondary-img-src="../assets/secondary.svg">
+                          </kwc-hero>
+            </template>
+        </test-fixture>
+
+        <script>
+            suite('Element set up', function() {
+                var basic,
+                    populated,
+                    copyArray = [
+                        'Kano gives you',
+                        'coding superpowers'
+                    ],
+                    backgroundImgSrc = '../assets/background.svg',
+                    mainImgSrc = '../assets/judoka.svg',
+                    secondaryImgSrc = '../assets/secondary.svg';
+
+                setup(function () {
+                    basic = fixture('basic');
+                    populated = fixture('populated');
+                    populated.copy = copyArray;
+                });
+
+                test('instantiating the element works', function() {
+                    assert.equal(basic.is, 'kwc-hero');
+                });
+
+                test('the copy should initialise as an empty array', function() {
+                    assert.isArray(basic.copy);
+                    assert.lengthOf(basic.copy, 0);
+                });
+
+                test('it should be possible to set the title imperatively', function() {
+                    basic.set('copy', copyArray);
+                    assert.equal(basic.copy, copyArray);
+                });
+
+                test('it should be possible to set the background image source imperatively', function() {
+                    basic.set('backgroundImgSrc', backgroundImgSrc);
+                    assert.equal(basic.backgroundImgSrc, backgroundImgSrc);
+                });
+
+                test('it should be possible to set the main image source imperatively', function() {
+                    basic.set('mainImgSrc', mainImgSrc);
+                    assert.equal(basic.mainImgSrc, mainImgSrc);
+                });
+
+                test('it should be possible to set the secondary image source imperatively', function() {
+                    basic.set('secondaryImgSrc', secondaryImgSrc);
+                    assert.equal(basic.secondaryImgSrc, secondaryImgSrc);
+                });
+
+                test('it should be possible to set the title declaritvely', function() {
+                    assert.equal(populated.copy, copyArray);
+                });
+
+                test('it should be possible to set the background image source declaritvely', function() {
+                    assert.equal(populated.backgroundImgSrc, backgroundImgSrc);
+                });
+
+                test('it should be possible to set the main image source declaritvely', function() {
+                    assert.equal(populated.mainImgSrc, mainImgSrc);
+                });
+
+                test('it should be possible to set the secondary image source declaritvely', function() {
+                    assert.equal(populated.secondaryImgSrc, secondaryImgSrc);
+                });
+
+                test('the title should appear in the dom', function(done) {
+                    flush(function () {
+                        var copyElements = Polymer.dom(populated.root).querySelectorAll('h2 span');
+                        assert.equal(copyElements[0].textContent, copyArray[0]);
+                        assert.equal(copyElements[1].textContent, copyArray[1]);
+                        done();
+                    });
+                });
+            });
+        </script>
+    </body>
 </html>
